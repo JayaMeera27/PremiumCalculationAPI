@@ -7,5 +7,9 @@ namespace SolildPrinciples.Repository
         Task SavePolicyDetails(InsuranceDetails insuranceDetails);
         Task<List<InsuranceDetails>> GetPolicyDetails(string policyType);
 
+        Task<List<InsuranceDetails>> GetAllPolicy();
+
+
+
     }
 }

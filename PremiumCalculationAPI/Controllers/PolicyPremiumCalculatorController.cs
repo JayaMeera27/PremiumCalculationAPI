@@ -34,5 +34,12 @@ namespace SolildPrinciples.Controllers
             var policies = await _insuranceRepository.GetPolicyDetails(policyType);
             return Ok(policies);
         }
+
+        [HttpGet("all-policies")]
+        public async Task<IActionResult> GetAllPolicies()
+        {
+            var policies = await _insuranceRepository.GetAllPolicy();
+            return Ok(policies);
+        }
     }
 }

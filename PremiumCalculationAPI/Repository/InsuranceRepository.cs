@@ -66,5 +66,43 @@ namespace SolildPrinciples.Repository
             }
             
         }
+
+        public async Task<List<InsuranceDetails>> GetAllPolicy()
+        {
+            var policies = new List<InsuranceDetails>();
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
+            {
+                connection.Open();
+                using(SqlCommand cmd = new SqlCommand("sp_GetAllPolicyDetails", connection))
+                {
+                    cmd.CommandType= CommandType.StoredProcedure;
+                    using(SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if(!reader.HasRows)
+                        {
+                            return policies;
+                        }
+                        while(await  reader.ReadAsync())
+                        {
+                            policies.Add(new InsuranceDetails
+                            {
+                                PolicyType = reader["PolicyType"].ToString(),
+                                NamedInsured = reader["InsuredName"].ToString(),
+                                EffectiveDate = Convert.ToDateTime(reader["Effectivedate"].ToString()),
+                                CoverageAmount = Convert.ToInt64(reader["CoverageAmount"]),
+                                RiskLevel = reader["RiskLevel"].ToString()
+
+
+                            });
+                            
+                            
+                        }
+                    }
+                }
+            }
+            return policies;
+        }
+
+
     }
 }
